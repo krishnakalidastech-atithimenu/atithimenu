@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#5a1713">
+<meta name="description" content="Atithi Restaurant digital menu">
+<title>Atithi | Digital Menu</title>
+<style>
+:root{--wine:#5a1713;--wine2:#7a261e;--gold:#b88735;--cream:#fff8ef;--paper:#fffdf9;--ink:#30201b;--muted:#77675f}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+header{background:linear-gradient(135deg,#3e0d0a,#741f18);color:#fff;text-align:center;padding:30px 16px 26px}
+.logo{width:70px;height:70px;border:2px solid #e4c16f;border-radius:50%;display:grid;place-items:center;margin:auto;color:#e4c16f;font:700 34px Georgia}
+h1{font:700 clamp(36px,9vw,58px) Georgia;margin:10px 0 4px;letter-spacing:5px}.tag{color:#f4d99e;letter-spacing:2px;font-size:13px}.line{width:85px;height:2px;background:#d7ae5b;margin:16px auto}
+.controls{position:sticky;top:0;z-index:20;background:rgba(255,248,239,.96);backdrop-filter:blur(8px);padding:10px;border-bottom:1px solid #ead9c5}
+.search{display:block;width:min(680px,100%);margin:0 auto 10px;padding:13px 16px;border:1px solid #d8c1a5;border-radius:30px;background:#fff;font-size:16px;outline:none}.search:focus{border-color:var(--gold)}
+.categories{display:flex;gap:8px;overflow-x:auto;max-width:1100px;margin:auto;padding-bottom:2px}.categories a{white-space:nowrap;text-decoration:none;color:var(--wine);border:1px solid #caa96d;background:#fff;border-radius:20px;padding:8px 13px;font-size:13px;font-weight:700}
+main{width:min(1100px,100%);margin:auto;padding:22px 14px 55px}.category{scroll-margin-top:105px;margin-bottom:30px}.category h2{text-align:center;color:var(--wine);font:700 26px Georgia;margin:8px 0 15px}.category h2:after{content:"";display:block;width:65px;height:2px;background:var(--gold);margin:9px auto}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.item{background:var(--paper);border:1px solid #eadbc9;border-radius:10px;padding:12px 11px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 3px 12px rgba(70,35,20,.06)}.name{font-size:15px;line-height:1.3}.price{font-weight:800;color:var(--wine);white-space:nowrap}.empty{display:none;text-align:center;color:var(--muted);padding:35px}
+.note{background:#f4e5d2;border:1px solid #e2c9a6;border-radius:12px;padding:14px 16px;margin:20px 0;color:#5c463d;font-size:13px;line-height:1.55}
+footer{background:#3e0d0a;color:#f4d99e;text-align:center;padding:28px 15px;font-size:13px}footer strong{color:#fff;font:700 20px Georgia}
+@media(max-width:620px){.grid{grid-template-columns:1fr}.item{padding:13px 12px}.name{font-size:15px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">A</div>
+  <h1>ATITHI</h1>
+  <div class="tag">RESTAURANT • DIGITAL MENU</div>
+  <div class="line"></div>
+</header>
+
+<div class="controls">
+  <input id="search" class="search" type="search" placeholder="🔎 Search for a dish..." aria-label="Search menu">
+  <div id="categories" class="categories"></div>
+</div>
+
+<main>
+  <div class="note">
+    <strong>Dining timings:</strong> Lunch 12:30 PM–4:00 PM &nbsp;•&nbsp; Dinner 7:00 PM–10:00 PM
+    <br><strong>Meals:</strong> 12:30 PM–4:00 PM
+  </div>
+  <div id="menu"></div>
+  <div id="empty" class="empty">No menu item found. Try another search.</div>
+</main>
+
+<footer><strong>ATITHI</strong><br>Thank you for visiting us!</footer>
+
+<script>
+const menu = {"Breakfast": [{"name": "Upma", "price": 50}, {"name": "Kesari Bath", "price": 50}, {"name": "Masala Dosa", "price": 80}, {"name": "Plain Dosa", "price": 70}, {"name": "Set Masala", "price": 120}, {"name": "Set Dosa", "price": 90}, {"name": "Ghee Roast", "price": 100}, {"name": "Ghee Roast Masala", "price": 110}, {"name": "Idly (2)", "price": 60}, {"name": "Vada", "price": 35}, {"name": "Vada (2)", "price": 70}, {"name": "Idly Vada", "price": 90}, {"name": "Idly (1)", "price": 30}, {"name": "Rice Bath", "price": 80}, {"name": "Sweet Kadubu", "price": 70}, {"name": "Bajji", "price": 50}, {"name": "Rava Idly (1)", "price": 60}, {"name": "Poori", "price": 80}, {"name": "Buns", "price": 50}], "Hot Beverages": [{"name": "Coffee", "price": 30}, {"name": "Special Coffee / Tea / Milk", "price": 50}, {"name": "Badam Milk", "price": 50}, {"name": "Horlicks", "price": 50}], "Starters": [{"name": "Mushroom Butter Garlic", "price": 240}, {"name": "Mushroom Salt & Pepper Garlic", "price": 240}, {"name": "Mushroom Manchurian", "price": 220}, {"name": "Mushroom Chilli", "price": 220}, {"name": "Deep Fried Mushroom", "price": 250}, {"name": "Mushroom Pepper Dry", "price": 250}, {"name": "Paneer Manchurian", "price": 260}, {"name": "Paneer Chilly", "price": 260}, {"name": "Paneer Pepper Dry", "price": 260}, {"name": "Paneer Butter Pepper Garlic", "price": 260}, {"name": "Chilli Pepper Baby Corn", "price": 240}, {"name": "Spicy Fried Baby Corn", "price": 240}, {"name": "Baby Corn Pepper Dry", "price": 240}, {"name": "Baby Corn Manchurian", "price": 240}, {"name": "Babycorn Chilly", "price": 240}, {"name": "Gobi Manchurian", "price": 140}, {"name": "Gobi Chilly", "price": 150}, {"name": "Gobi Pepper Dry", "price": 170}, {"name": "Veg Manchurian", "price": 250}, {"name": "Aloo Jeera Dry", "price": 170}, {"name": "Finger Chips", "price": 170}, {"name": "Chilli Cauli Flower", "price": 160}, {"name": "Chilli Potato", "price": 170}, {"name": "Kung Pow Potato", "price": 280}], "Soups": [{"name": "Veg Manchow Soup", "price": 150}, {"name": "Veg Mai Tai Soup", "price": 150}, {"name": "Veg Sweet Corn Soup", "price": 150}, {"name": "Veg Hot & Sour Soup", "price": 150}, {"name": "Tomato Soup", "price": 150}, {"name": "Mushroom Soup", "price": 150}, {"name": "Clear Soup", "price": 150}, {"name": "Lemon Coriander Soup", "price": 150}], "Thava Roti": [{"name": "Akki Roti Curry", "price": 110}, {"name": "Chapathi Curry (2)", "price": 110}, {"name": "Parota Curry (2)", "price": 130}, {"name": "Chapathi", "price": 30}, {"name": "Parota", "price": 35}, {"name": "Akki Roti (1)", "price": 30}], "Tandoori": [{"name": "Roti", "price": 40}, {"name": "Butter Roti", "price": 45}, {"name": "Butter Kulcha", "price": 50}, {"name": "Butter Naan", "price": 55}, {"name": "Naan Plain", "price": 50}, {"name": "Aloo Parota", "price": 140}], "Main Course": [{"name": "Mix Veg Curry", "price": 150}, {"name": "Paneer Makhni", "price": 250}, {"name": "Paneer Lajawab", "price": 250}, {"name": "Palak Paneer", "price": 250}, {"name": "Paneer Butter Masala", "price": 250}, {"name": "Paneer Burji Masala", "price": 260}, {"name": "Kadai Paneer", "price": 290}, {"name": "Veg Kastu", "price": 210}, {"name": "Veg Hydrabadi", "price": 210}, {"name": "Veg Kolhapur", "price": 210}, {"name": "Veg Kadai", "price": 230}, {"name": "Veg Jaipuri", "price": 230}, {"name": "Baby Corn Mushroom Dopeyaza", "price": 260}, {"name": "Aloo Methi Tomato", "price": 220}, {"name": "Atithi Spl Veg", "price": 310}, {"name": "Dum Aloo", "price": 260}, {"name": "Gobi Masala", "price": 190}, {"name": "Aloo Palak", "price": 200}, {"name": "Tomato Masala", "price": 160}, {"name": "Capsicum Masala", "price": 190}, {"name": "Mushroom Masala", "price": 250}, {"name": "Mushroom Kadai", "price": 290}, {"name": "Green Peas Masala", "price": 190}, {"name": "Dal Palak", "price": 190}, {"name": "Dal Fry", "price": 140}, {"name": "Dal Tadka", "price": 140}, {"name": "Butter Dhal Fry", "price": 170}], "Rice & Noodles": [{"name": "Veg Fried Rice", "price": 130}, {"name": "Gobi Fried Rice", "price": 140}, {"name": "Veg Garlic Fried Rice", "price": 160}, {"name": "Mushroom Fried Rice", "price": 190}, {"name": "Veg Schezwan Fried Rice", "price": 200}, {"name": "Paneer Fried Rice", "price": 210}, {"name": "Mix Fried Rice", "price": 210}, {"name": "Mushroom Paneer Fried Rice", "price": 210}, {"name": "Veg Noodles", "price": 160}, {"name": "Veg Chilli Garlic Noodles", "price": 190}], "Rice & Biryani": [{"name": "Veg Biryani", "price": 140}, {"name": "Mushroom Biryani", "price": 190}, {"name": "Paneer Biryani", "price": 210}, {"name": "Green Peas Pulao", "price": 150}, {"name": "Veg Pulao", "price": 130}, {"name": "Jeera Rice", "price": 140}, {"name": "Ghee Rice", "price": 140}, {"name": "Dhal Khichdi", "price": 170}, {"name": "Curd Rice", "price": 80}, {"name": "Plain Rice", "price": 50}], "Meals / Thali (Limited)": [{"name": "South Indian Meals (Limited)", "price": 150}, {"name": "South Indian Special Meals (Limited)", "price": 250}, {"name": "Combo Meals (Limited)", "price": 200}], "Fruit Juices": [{"name": "Orange Juice", "price": 80}, {"name": "Watermelon", "price": 80}, {"name": "Musk Melon", "price": 80}, {"name": "Pineapple", "price": 80}, {"name": "Papaya", "price": 80}, {"name": "Mosambi", "price": 80}, {"name": "Apple Juice", "price": 120}, {"name": "Pomegranate", "price": 120}], "Fresh Lime": [{"name": "Lime Soda", "price": 50}, {"name": "Lime Juice", "price": 40}], "Milk Shakes": [{"name": "Apple Milkshake", "price": 130}, {"name": "Pomegranate Shake", "price": 150}, {"name": "Musk Melon Shake", "price": 130}, {"name": "Papaya Shake", "price": 130}, {"name": "Chikoo Milkshake", "price": 130}, {"name": "Rose Milk", "price": 100}], "Ice Cream Shakes": [{"name": "Strawberry Shake", "price": 130}, {"name": "Vanilla Shake", "price": 130}, {"name": "Chocolate Shake", "price": 130}, {"name": "Butterscotch Shake", "price": 130}, {"name": "Mango Shake", "price": 130}], "Specials": [{"name": "Gudbud", "price": 180}, {"name": "Falooda", "price": 180}, {"name": "Fruit Salad", "price": 130}, {"name": "Fruit Salad with Ice Cream", "price": 160}]};
+const menuEl = document.getElementById('menu');
+const categoriesEl = document.getElementById('categories');
+const searchEl = document.getElementById('search');
+const emptyEl = document.getElementById('empty');
+
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
+
+Object.keys(menu).forEach(cat=>{
+  const a=document.createElement('a'); a.href='#'+slug(cat); a.textContent=cat; categoriesEl.appendChild(a);
+});
+
+function render(filter=''){
+  menuEl.innerHTML='';
+  let count=0;
+  Object.entries(menu).forEach(([cat,items])=>{
+    const filtered=items.filter(x=>x.name.toLowerCase().includes(filter.toLowerCase()));
+    if(!filtered.length)return;
+    count+=filtered.length;
+    const section=document.createElement('section');
+    section.className='category'; section.id=slug(cat);
+    const h=document.createElement('h2'); h.textContent=cat; section.appendChild(h);
+    const grid=document.createElement('div'); grid.className='grid';
+    filtered.forEach(x=>{
+      const card=document.createElement('div'); card.className='item';
+      card.innerHTML=`<span class="name">${x.name}</span><span class="price">₹${x.price}</span>`;
+      grid.appendChild(card);
+    });
+    section.appendChild(grid); menuEl.appendChild(section);
+  });
+  emptyEl.style.display=count?'none':'block';
+}
+searchEl.addEventListener('input',e=>render(e.target.value));
+render();
+</script>
+</body>
+</html>
